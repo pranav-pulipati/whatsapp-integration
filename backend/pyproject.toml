@@ -35,8 +35,12 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "S", "SIM"]
-ignore = ["S101", "B008"]
+# E501: line length is handled by `ruff format`.
+ignore = ["S101", "B008", "E501"]
+
+[tool.ruff.lint.isort]
+known-third-party = ["alembic"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S105", "S106"]
-"alembic/**" = ["E501"]
+"app/config.py" = ["S105"]

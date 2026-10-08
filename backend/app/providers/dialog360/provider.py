@@ -32,7 +32,9 @@ META_MEDIA_HOST = "lookaside.fbsbx.com"
 class Dialog360Provider:
     name = "360dialog"
 
-    def __init__(self, settings: Settings | None = None, transport: httpx.BaseTransport | None = None):
+    def __init__(
+        self, settings: Settings | None = None, transport: httpx.BaseTransport | None = None
+    ):
         self.settings = settings or get_settings()
         self._transport = transport
 
@@ -93,7 +95,9 @@ class Dialog360Provider:
 
     def register_webhook(self, api_key: str, url: str, headers: dict[str, str]) -> None:
         with self._client(api_key) as client:
-            self._request(client, "POST", "/v1/configs/webhook", json={"url": url, "headers": headers})
+            self._request(
+                client, "POST", "/v1/configs/webhook", json={"url": url, "headers": headers}
+            )
 
     def _rewrite_media_url(self, url: str) -> str:
         """Only ever send the API key to the 360dialog host (prevents SSRF/key leaks)."""
@@ -103,7 +107,9 @@ class Dialog360Provider:
             raise ProviderError("unexpected media URL host", retryable=False)
         return urlunsplit((base.scheme, base.netloc, parts.path, parts.query, ""))
 
-    def _request(self, client: httpx.Client, method: str, path: str, **kwargs: Any) -> httpx.Response:
+    def _request(
+        self, client: httpx.Client, method: str, path: str, **kwargs: Any
+    ) -> httpx.Response:
         try:
             resp = client.request(method, path, **kwargs)
         except httpx.HTTPError as exc:

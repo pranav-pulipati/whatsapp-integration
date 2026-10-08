@@ -50,7 +50,9 @@ def test_fetch_media_rewrites_lookaside_host_and_sends_key():
                     "mime_type": "image/jpeg",
                 },
             )
-        return httpx.Response(200, content=b"\xff\xd8jpeg-bytes", headers={"content-type": "image/jpeg"})
+        return httpx.Response(
+            200, content=b"\xff\xd8jpeg-bytes", headers={"content-type": "image/jpeg"}
+        )
 
     media = _provider(handler).fetch_media("key-123", "1043567891234567")
     assert media.content == b"\xff\xd8jpeg-bytes"
@@ -102,7 +104,9 @@ def test_register_webhook_payload():
         captured["body"] = json.loads(request.content)
         return httpx.Response(200, json={"url": "ok"})
 
-    _provider(handler).register_webhook("k", "https://x.example.com/hook", {"X-Webhook-Secret": "s"})
+    _provider(handler).register_webhook(
+        "k", "https://x.example.com/hook", {"X-Webhook-Secret": "s"}
+    )
     assert captured["path"] == "/v1/configs/webhook"
     assert captured["body"] == {
         "url": "https://x.example.com/hook",

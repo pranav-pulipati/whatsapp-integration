@@ -261,7 +261,9 @@ def _message(
     )
 
 
-def _content(msg_type: str, msg: dict[str, Any]) -> tuple[str | None, dict[str, Any], MediaRef | None]:
+def _content(
+    msg_type: str, msg: dict[str, Any]
+) -> tuple[str | None, dict[str, Any], MediaRef | None]:
     body = msg.get(msg_type)
     obj: dict[str, Any] = body if isinstance(body, dict) else {}
 
@@ -285,7 +287,9 @@ def _content(msg_type: str, msg: dict[str, Any]) -> tuple[str | None, dict[str, 
 
     if msg_type == "contacts":
         cards = body if isinstance(body, list) else []
-        names = [((c.get("name") or {}).get("formatted_name")) for c in cards if isinstance(c, dict)]
+        names = [
+            ((c.get("name") or {}).get("formatted_name")) for c in cards if isinstance(c, dict)
+        ]
         names = [n for n in names if n]
         return (", ".join(names) or None), {"contacts": cards}, None
 

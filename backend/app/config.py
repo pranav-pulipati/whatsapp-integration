@@ -51,6 +51,7 @@ class Settings(BaseSettings):
     s3_bucket: str = "wa-media"
     s3_access_key_id: str = Field(default="", repr=False)
     s3_secret_access_key: str = Field(default="", repr=False)
+    s3_server_side_encryption: str = ""  # e.g. "AES256" on AWS S3
     media_max_bytes: int = 100 * 1024 * 1024
 
     # Processing
@@ -84,10 +85,14 @@ class Settings(BaseSettings):
         if len(self.jwt_secret) < 32:
             problems.append("JWT_SECRET must be at least 32 characters")
         if not self.encryption_key:
-            problems.append("ENCRYPTION_KEY is required (generate with `python -m app.cli gen-key`)")
+            problems.append(
+                "ENCRYPTION_KEY is required (generate with `python -m app.cli gen-key`)"
+            )
         if self.is_production:
             if len(self.webhook_shared_secret) < 24:
-                problems.append("WEBHOOK_SHARED_SECRET must be at least 24 characters in production")
+                problems.append(
+                    "WEBHOOK_SHARED_SECRET must be at least 24 characters in production"
+                )
             if not self.public_base_url.startswith("https://"):
                 problems.append("PUBLIC_BASE_URL must be https:// in production")
             if self.dialog360_require_signature and not self.dialog360_platform_secret:

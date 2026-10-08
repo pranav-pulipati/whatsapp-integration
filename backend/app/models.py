@@ -25,6 +25,8 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     func,
+)
+from sqlalchemy import (
     text as sql_text,
 )
 from sqlalchemy.dialects.postgresql import JSONB
@@ -150,9 +152,7 @@ class Message(TimestampMixin, Base):
             "account_id", "provider_message_id", name="uq_messages_account_provider_id"
         ),
         CheckConstraint("direction IN ('inbound', 'outbound')", name="ck_messages_direction"),
-        CheckConstraint(
-            "source IN ('webhook', 'echo', 'history')", name="ck_messages_source"
-        ),
+        CheckConstraint("source IN ('webhook', 'echo', 'history')", name="ck_messages_source"),
         Index("ix_messages_conversation_sent_at", "conversation_id", "sent_at"),
         Index("ix_messages_account_sent_at", "account_id", "sent_at"),
         Index("ix_messages_sent_at", "sent_at"),
@@ -161,9 +161,7 @@ class Message(TimestampMixin, Base):
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     account_id: Mapped[int] = mapped_column(ForeignKey("whatsapp_accounts.id", ondelete="CASCADE"))
-    conversation_id: Mapped[int] = mapped_column(
-        ForeignKey("conversations.id", ondelete="CASCADE")
-    )
+    conversation_id: Mapped[int] = mapped_column(ForeignKey("conversations.id", ondelete="CASCADE"))
     contact_id: Mapped[int] = mapped_column(ForeignKey("contacts.id", ondelete="CASCADE"))
     provider_message_id: Mapped[str] = mapped_column(String(256))
     direction: Mapped[str] = mapped_column(String(8))
@@ -269,9 +267,7 @@ class WebhookEvent(Base):
             "status IN ('pending', 'retry', 'processed', 'ignored', 'dead')",
             name="ck_webhook_events_status",
         ),
-        CheckConstraint(
-            "source IN ('webhook', 'history_import')", name="ck_webhook_events_source"
-        ),
+        CheckConstraint("source IN ('webhook', 'history_import')", name="ck_webhook_events_source"),
         Index(
             "ix_webhook_events_due",
             "next_attempt_at",
