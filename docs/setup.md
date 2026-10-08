@@ -4,7 +4,7 @@
 
 | Tool | Version | Notes |
 |---|---|---|
-| Docker or Podman | any recent | For PostgreSQL and MinIO |
+| Docker or Podman | any recent | For PostgreSQL and SeaweedFS (S3) |
 | Python | 3.12 or 3.13 | Managed by [uv](https://docs.astral.sh/uv/) (`curl -LsSf https://astral.sh/uv/install.sh \| sh`) |
 | Node.js | 22 | For the dashboard |
 
@@ -29,13 +29,13 @@ Fill in these values (each command prints a fresh one):
 
 The backend reads `.env` from the repo root or from `backend/`. Never commit `.env`; `.gitignore` already excludes it.
 
-## 3. Start PostgreSQL and MinIO
+## 3. Start PostgreSQL and S3 storage
 
 ```bash
-docker compose up -d     # postgres:5432, MinIO API :9000, console :9001 (minioadmin/minioadmin)
+docker compose up -d     # postgres:5432, SeaweedFS S3 API :9000 (any access key works locally)
 ```
 
-The `minio-init` service creates the `wa-media` bucket.
+The worker creates the `wa-media` bucket on startup if it does not exist.
 
 ## 4. Migrations and first user
 
@@ -126,7 +126,7 @@ cd frontend && npm run typecheck && npm test && npm run build
 ## Running everything in containers
 
 ```bash
-docker compose --profile app up --build   # postgres, minio, api (+migrations), worker
+docker compose --profile app up --build   # postgres, s3, api (+migrations), worker
 ```
 
 The API serves the built dashboard at http://localhost:8000.

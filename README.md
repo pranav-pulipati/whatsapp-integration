@@ -29,7 +29,7 @@ Prerequisites: Docker (or Podman), Python 3.12 with [uv](https://docs.astral.sh/
 
 ```bash
 cp .env.example .env                 # then fill JWT_SECRET, ENCRYPTION_KEY, WEBHOOK_SHARED_SECRET
-docker compose up -d                 # PostgreSQL + MinIO
+docker compose up -d                 # PostgreSQL + SeaweedFS (S3-compatible media storage)
 
 cd backend
 uv sync

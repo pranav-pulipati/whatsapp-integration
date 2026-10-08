@@ -37,7 +37,7 @@ Set these in `.env` on the server (or your platform's secret manager). See `.env
 | `JWT_SECRET` | 48+ random characters |
 | `ENCRYPTION_KEY` | Fernet key (`python -m app.cli gen-key`). **Back it up.** If you lose it, the stored API keys can't be decrypted. |
 | `WEBHOOK_SHARED_SECRET` | 32+ random characters |
-| `S3_ENDPOINT_URL` | empty for AWS S3; the R2/MinIO endpoint otherwise |
+| `S3_ENDPOINT_URL` | empty for AWS S3; the R2 / other S3-compatible endpoint otherwise |
 | `S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | bucket credentials, limited to that bucket |
 | `S3_SERVER_SIDE_ENCRYPTION` | `AES256` on AWS S3 |
 | `CORS_ORIGINS` | leave empty (the dashboard is same-origin) |

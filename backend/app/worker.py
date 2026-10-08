@@ -199,6 +199,12 @@ def run() -> None:
 
     signal.signal(signal.SIGTERM, _stop)
     signal.signal(signal.SIGINT, _stop)
+    try:
+        storage = get_storage()
+        if hasattr(storage, "ensure_bucket"):
+            storage.ensure_bucket()
+    except Exception as exc:
+        log.warning("could not verify media bucket", extra={"ctx": {"error": _error_text(exc)}})
     log.info("worker started")
     last_purge = 0.0
 

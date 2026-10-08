@@ -29,6 +29,14 @@ class S3Storage:
             config=Config(retries={"max_attempts": 3, "mode": "standard"}),
         )
 
+    def ensure_bucket(self) -> None:
+        """Create the bucket if it doesn't exist (local dev). In production the
+        bucket is pre-created and the key usually lacks CreateBucket rights."""
+        try:
+            self.client.head_bucket(Bucket=self.bucket)
+        except Exception:
+            self.client.create_bucket(Bucket=self.bucket)
+
     def put(self, key: str, data: bytes, content_type: str | None) -> None:
         extra = {"ServerSideEncryption": self.sse} if self.sse else {}
         self.client.put_object(

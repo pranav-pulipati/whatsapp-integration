@@ -1,4 +1,4 @@
-# Local development dependencies: PostgreSQL + MinIO (S3-compatible media storage).
+# Local development dependencies: PostgreSQL + SeaweedFS (S3-compatible media storage).
 # The API, worker and dashboard run on the host during development (see docs/setup.md).
 # To run the whole stack in containers instead: `docker compose --profile app up --build`.
 
@@ -19,28 +19,15 @@ services:
       timeout: 3s
       retries: 10
 
-  minio:
-    image: minio/minio:latest
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+  # S3-compatible media storage (SeaweedFS; MinIO no longer publishes free images).
+  # Accepts any access key locally; the worker creates the bucket on startup.
+  s3:
+    image: chrislusf/seaweedfs:latest
+    command: server -ip.bind=0.0.0.0 -dir=/data -s3 -s3.port=8333
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "9000:8333"
     volumes:
-      - miniodata:/data
-
-  # Creates the media bucket once MinIO is up.
-  minio-init:
-    image: minio/mc:latest
-    depends_on:
-      - minio
-    entrypoint: >
-      /bin/sh -c "
-      until mc alias set local http://minio:9000 minioadmin minioadmin; do sleep 1; done;
-      mc mb --ignore-existing local/wa-media;
-      "
+      - s3data:/data
 
   api:
     profiles: ["app"]
@@ -49,7 +36,7 @@ services:
     env_file: .env
     environment: &app_env
       DATABASE_URL: postgresql+psycopg://wa:wa@postgres:5432/wa_dashboard
-      S3_ENDPOINT_URL: http://minio:9000
+      S3_ENDPOINT_URL: http://s3:8333
     ports:
       - "8000:8000"
     depends_on:
@@ -68,4 +55,4 @@ services:
 
 volumes:
   pgdata:
-  miniodata:
+  s3data:

@@ -84,7 +84,7 @@ To add a provider, implement this protocol and register it in `providers/registr
 | **PostgreSQL** | Relational data with strong constraints. The constraints *are* the idempotency guarantees. Also used as the job queue (`SKIP LOCKED`), so there is no Redis or Kafka to run. |
 | **FastAPI + SQLAlchemy 2 + Alembic** | Typed validation, automatic OpenAPI, mature migrations. |
 | **Postgres-backed queue** | The expected load is 5 to 20 numbers. One transaction per event handles about 50 events/s per worker on a laptop, and you can run more workers to scale. |
-| **S3-compatible storage** | Keeps media out of Postgres. MinIO locally; S3, R2 or GCS in production. |
+| **S3-compatible storage** | Keeps media out of Postgres. SeaweedFS locally; S3, R2 or GCS in production. |
 | **React + Vite, hand-built SVG charts** | Small bundle (about 83 KB gzipped). The charts follow a consistent, accessible spec. |
 | **One container image** | The API serves the dashboard (same origin, no CORS). The worker uses the same image with a different command. |
 

@@ -153,7 +153,7 @@ Short version (full detail in [setup.md](setup.md)):
 
 ```bash
 cp .env.example .env            # fill JWT_SECRET, ENCRYPTION_KEY, WEBHOOK_SHARED_SECRET
-docker compose up -d            # Postgres + MinIO
+docker compose up -d            # Postgres + SeaweedFS (S3)
 cd backend && uv sync && uv run alembic upgrade head
 uv run python -m app.cli create-user <you@company.com> --role admin
 uv run python -m app.cli seed-demo           # optional demo data
