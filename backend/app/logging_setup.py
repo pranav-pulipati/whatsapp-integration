@@ -12,15 +12,16 @@ import sys
 from datetime import UTC, datetime
 from typing import Any
 
-_PHONE_RE = re.compile(r"(?<!\d)(\+?\d{3})\d{4,}(\d{2})(?!\d)")
+# Digit runs that stand alone (not part of hex ids / tokens).
+_PHONE_RE = re.compile(r"(?<![\w.])(\+?\d{3})\d{4,}(\d{2})(?![\w])")
 _SECRET_RE = re.compile(
     r"(?i)(d360-api-key|authorization|x-webhook-secret|api[_-]?key|password|secret|token)"
-    r"([\"']?\s*[:=]\s*[\"']?)([^\s\"',}]+)"
+    r"([\"']?\s*[:=]\s*[\"']?)((?:bearer|basic)\s+)?([^\s\"',}]+)"
 )
 
 
 def redact(value: str) -> str:
-    value = _SECRET_RE.sub(r"\1\2[REDACTED]", value)
+    value = _SECRET_RE.sub(r"\1\2\3[REDACTED]", value)
     return _PHONE_RE.sub(r"\1****\2", value)
 
 

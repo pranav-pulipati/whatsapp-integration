@@ -1,14 +1,12 @@
 from datetime import datetime
-from typing import Any, Generic, Literal, TypeVar
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 from app.phone import digits
 
-T = TypeVar("T")
 
-
-class Paginated(BaseModel, Generic[T]):
+class Paginated[T](BaseModel):
     items: list[T]
     total: int
     limit: int
@@ -32,7 +30,7 @@ class UserOut(BaseModel):
 
 class TokenOut(BaseModel):
     access_token: str
-    token_type: Literal["bearer"] = "bearer"
+    token_type: Literal["bearer"] = "bearer"  # noqa: S105
     expires_at: datetime
     user: UserOut
 

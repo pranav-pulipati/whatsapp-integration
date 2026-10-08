@@ -127,7 +127,9 @@ def capture_health(a: WhatsAppAccount, s: dict) -> CaptureHealth:
         if failed:
             reasons.append(f"{failed} event(s) failed processing — see Ingestion.")
         if not a.api_key_encrypted:
-            reasons.append("No 360dialog API key stored: photos, voice notes and documents can't be downloaded.")
+            reasons.append(
+                "No 360dialog API key stored: photos, voice notes and documents can't be downloaded."
+            )
         if datetime.now(UTC) - a.last_event_at > STALE_AFTER:
             reasons.append("No events in the last 3 days.")
         level = "warning" if reasons else "ok"

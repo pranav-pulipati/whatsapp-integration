@@ -279,7 +279,7 @@ def cmd_seed_demo(a: argparse.Namespace) -> None:
 
     if get_settings().is_production:
         sys.exit("Refusing to seed demo data in production")
-    rng = random.Random(a.seed)
+    rng = random.Random(a.seed)  # noqa: S311 - demo data, not security
     now = datetime.now(UTC)
     with session_scope() as db:
         accounts = []

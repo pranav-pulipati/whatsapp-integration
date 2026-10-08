@@ -1,0 +1,12 @@
+# Automatic HTTPS (Let's Encrypt) for {$DOMAIN}. 360dialog requires a valid
+# certificate, no underscores in the domain and no explicit port.
+# Access logging is done by the app itself, which masks webhook tokens.
+{$DOMAIN} {
+	encode zstd gzip
+
+	request_body {
+		max_size 10MB
+	}
+
+	reverse_proxy api:8000
+}

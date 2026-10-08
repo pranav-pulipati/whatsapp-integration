@@ -17,6 +17,14 @@ from app.logging_setup import configure_logging
 
 log = logging.getLogger("app.http")
 
+# The dashboard only talks to its own origin; media is rendered from blob: URLs.
+CSP = (
+    "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
+    "img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; "
+    "font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; "
+    "form-action 'self'"
+)
+
 
 def create_app() -> FastAPI:
     settings = get_settings()
@@ -44,13 +52,16 @@ def create_app() -> FastAPI:
 
     @app.middleware("http")
     async def request_context(request: Request, call_next) -> Response:  # noqa: ANN001
-        request_id = request.headers.get("x-request-id") or uuid.uuid4().hex
+        incoming = request.headers.get("x-request-id", "")
+        request_id = incoming if incoming.isalnum() and len(incoming) <= 64 else uuid.uuid4().hex
         started = time.perf_counter()
         response = await call_next(request)
         response.headers["X-Request-ID"] = request_id
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "no-referrer"
+        if not request.url.path.startswith("/api/docs"):
+            response.headers.setdefault("Content-Security-Policy", CSP)
         if settings.is_production:
             response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
         path = request.url.path
@@ -100,7 +111,7 @@ def _mount_frontend(app: FastAPI, dist_dir: str | None) -> None:
     dist = Path(dist_dir).resolve()
     app.mount("/assets", StaticFiles(directory=dist / "assets"), name="assets")
 
-    @app.get("/{path:path}", include_in_schema=False)
+    @app.api_route("/{path:path}", methods=["GET", "HEAD"], include_in_schema=False)
     def spa(path: str) -> FileResponse:
         candidate = (dist / path).resolve()
         if path and candidate.is_file() and dist in candidate.parents:
