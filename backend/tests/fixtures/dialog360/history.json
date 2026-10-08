@@ -1,0 +1,67 @@
+{
+  "id": "EVT-HISTORY-1",
+  "event": "history",
+  "data": {
+    "id": "102938475610001",
+    "messaging_product": "whatsapp",
+    "metadata": {
+      "display_phone_number": "15550001111",
+      "phone_number_id": "109876543210001"
+    },
+    "history": [
+      {
+        "metadata": {
+          "phase": 0,
+          "chunk_order": 1,
+          "progress": 100
+        },
+        "threads": [
+          {
+            "id": "918888777766",
+            "messages": [
+              {
+                "from": "918888777766",
+                "id": "wamid.HIST.1",
+                "timestamp": "1752000000",
+                "type": "text",
+                "text": {
+                  "body": "Hello, I saw your listing"
+                },
+                "history_context": {
+                  "status": "READ"
+                }
+              },
+              {
+                "from": "15550001111",
+                "to": "918888777766",
+                "id": "wamid.HIST.2",
+                "timestamp": "1752000300",
+                "type": "text",
+                "text": {
+                  "body": "Thanks for reaching out! Which property?"
+                },
+                "history_context": {
+                  "status": "READ"
+                }
+              },
+              {
+                "from": "918888777766",
+                "id": "wamid.HIST.3",
+                "timestamp": "1752000600",
+                "type": "document",
+                "document": {
+                  "filename": "requirements.pdf",
+                  "mime_type": "application/pdf",
+                  "id": "3043567891234567"
+                },
+                "history_context": {
+                  "status": "DELIVERED"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

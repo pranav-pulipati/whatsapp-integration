@@ -1,0 +1,39 @@
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "102938475610001",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15550001111",
+              "phone_number_id": "109876543210001"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "João Silva"
+                },
+                "wa_id": "551199998888"
+              }
+            ],
+            "messages": [
+              {
+                "from": "551199998888",
+                "id": "wamid.BR.in1",
+                "timestamp": "1759918000",
+                "type": "text",
+                "text": {
+                  "body": "Olá"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}

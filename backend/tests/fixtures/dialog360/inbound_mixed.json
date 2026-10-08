@@ -1,0 +1,119 @@
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "102938475610001",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15550001111",
+              "phone_number_id": "109876543210001"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Priya Sharma"
+                },
+                "wa_id": "919876543210"
+              }
+            ],
+            "messages": [
+              {
+                "from": "919876543210",
+                "id": "wamid.MIXED.location",
+                "timestamp": "1759917700",
+                "type": "location",
+                "location": {
+                  "latitude": 12.9716,
+                  "longitude": 77.5946,
+                  "name": "Site office",
+                  "address": "MG Road, Bengaluru"
+                }
+              },
+              {
+                "from": "919876543210",
+                "id": "wamid.MIXED.interactive",
+                "timestamp": "1759917710",
+                "type": "interactive",
+                "interactive": {
+                  "type": "button_reply",
+                  "button_reply": {
+                    "id": "book_visit",
+                    "title": "Book a site visit"
+                  }
+                }
+              },
+              {
+                "from": "919876543210",
+                "id": "wamid.MIXED.button",
+                "timestamp": "1759917720",
+                "type": "button",
+                "context": {
+                  "from": "15550001111",
+                  "id": "wamid.ECHO.text1"
+                },
+                "button": {
+                  "text": "Yes, call me",
+                  "payload": "CALL_ME"
+                }
+              },
+              {
+                "from": "919876543210",
+                "id": "wamid.MIXED.contacts",
+                "timestamp": "1759917730",
+                "type": "contacts",
+                "contacts": [
+                  {
+                    "name": {
+                      "formatted_name": "Rahul Verma",
+                      "first_name": "Rahul"
+                    },
+                    "phones": [
+                      {
+                        "phone": "+91 98450 12345",
+                        "type": "CELL",
+                        "wa_id": "919845012345"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "from": "919876543210",
+                "id": "wamid.MIXED.reaction",
+                "timestamp": "1759917740",
+                "type": "reaction",
+                "reaction": {
+                  "message_id": "wamid.ECHO.text1",
+                  "emoji": "👍"
+                }
+              },
+              {
+                "from": "919876543210",
+                "id": "wamid.MIXED.unsupported",
+                "timestamp": "1759917750",
+                "type": "unsupported",
+                "errors": [
+                  {
+                    "code": 131051,
+                    "title": "Message type unknown",
+                    "message": "Message type unknown",
+                    "error_data": {
+                      "details": "Message type is currently not supported."
+                    }
+                  }
+                ],
+                "unsupported": {
+                  "type": "poll"
+                }
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}

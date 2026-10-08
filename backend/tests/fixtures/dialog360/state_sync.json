@@ -1,0 +1,26 @@
+{
+  "id": "EVT-SYNC-1",
+  "event": "smb_app_state_sync",
+  "data": {
+    "id": "102938475610001",
+    "messaging_product": "whatsapp",
+    "metadata": {
+      "display_phone_number": "15550001111",
+      "phone_number_id": "109876543210001"
+    },
+    "state_sync": [
+      {
+        "type": "contact",
+        "contact": {
+          "full_name": "Priya S (2BHK lead)",
+          "first_name": "Priya",
+          "phone_number": "919876543210"
+        },
+        "action": "add",
+        "metadata": {
+          "timestamp": "1759917000"
+        }
+      }
+    ]
+  }
+}
