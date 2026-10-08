@@ -86,6 +86,19 @@ The worker downloads media asynchronously right after ingestion and stores it in
 - Not supported: Official Business Accounts (blue badge), migrating between WABAs, the calling API, and the WhatsApp for Windows / WearOS companion apps. **[verified]**
 - Only 1:1 chats are synced (no groups). **[assumption based on Meta docs; verify]**
 
+## Pilot verification checklist (what still needs real numbers)
+
+The parts below cannot be proven with fixtures. Verify them during the pilot; the dashboard measures each one.
+
+| To verify | How the dashboard shows it |
+|---|---|
+| Every number's app-sent replies arrive as `smb_message_echoes` | Numbers → number → *app-sent replies (7d)* > 0 and *Last app-sent reply* is recent |
+| Echoes are attached to the right conversation and contact | Conversations → the customer's message and the rep's reply sit in one thread |
+| No echoes are missing | *Unmatched statuses* = 0 (delivery receipts for messages whose content never arrived) |
+| The real payload shape matches the fixtures | Ingestion → *Ignored* is empty (unknown shapes land there, nothing is dropped) |
+| Whether 360dialog signs direct-client webhooks | Check incoming headers once; if `x-360dialog-signature` is present, set `DIALOG360_PLATFORM_SECRET` and `DIALOG360_REQUIRE_SIGNATURE=true` |
+| The Hub history export format | `import-history` reports 0 unrecognised chunks |
+
 ## Sources
 
 - Webhook reference: https://docs.360dialog.com/docs/messaging/webhook/webhook-reference
