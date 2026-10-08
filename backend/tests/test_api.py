@@ -317,6 +317,8 @@ def test_timeseries_fills_empty_days(client):
         1,
     )
     assert client.get("/api/v1/analytics/timeseries?tz=Mars/Base", headers=h).status_code == 422
+    # legacy alias reported by browsers in India
+    assert client.get("/api/v1/analytics/timeseries?tz=Asia/Calcutta", headers=h).status_code == 200
 
 
 def test_ops_retry_dead_event(client):

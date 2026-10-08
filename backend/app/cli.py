@@ -296,6 +296,8 @@ def cmd_seed_demo(a: argparse.Namespace) -> None:
                     waba_id="200000000000001",
                     status="pending",
                     webhook_token=generate_webhook_token(),
+                    # Placeholder so the demo isn't flagged; demo data has no media to fetch.
+                    api_key_encrypted=encrypt_secret("demo-not-a-real-key"),
                     metadata_={"demo": True},
                 )
                 db.add(acc)

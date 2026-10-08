@@ -1,5 +1,4 @@
 from datetime import UTC, datetime, timedelta
-from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import and_, func, select, text
@@ -27,12 +26,26 @@ def _range(date_from: datetime | None, date_to: datetime | None) -> tuple[dateti
     return start, end
 
 
-def _tz(tz: str) -> str:
-    try:
-        ZoneInfo(tz)
-    except (ZoneInfoNotFoundError, ValueError):
-        raise ApiError(422, "validation_error", f"Unknown timezone '{tz}'") from None
-    return tz
+# Legacy IANA names browsers still report that some PostgreSQL builds don't know.
+_TZ_ALIASES = {
+    "Asia/Calcutta": "Asia/Kolkata",
+    "Asia/Katmandu": "Asia/Kathmandu",
+    "Asia/Saigon": "Asia/Ho_Chi_Minh",
+    "Asia/Rangoon": "Asia/Yangon",
+    "Europe/Kiev": "Europe/Kyiv",
+    "America/Buenos_Aires": "America/Argentina/Buenos_Aires",
+    "Pacific/Truk": "Pacific/Chuuk",
+}
+
+
+def _tz(db: Session, tz: str) -> str:
+    """Validate against the database's own zone list (that's what will be used)."""
+    for candidate in (tz, _TZ_ALIASES.get(tz)):
+        if candidate and db.scalar(
+            text("SELECT 1 FROM pg_timezone_names WHERE name = :n"), {"n": candidate}
+        ):
+            return candidate
+    raise ApiError(422, "validation_error", f"Unknown timezone '{tz}'")
 
 
 @router.get("/overview", response_model=schemas.Overview, summary="Headline numbers")
@@ -178,6 +191,6 @@ def timeseries(
     start, end = _range(date_from, date_to)
     rows = db.execute(
         _TIMESERIES_SQL,
-        {"start": start, "end": end, "tz": _tz(tz), "account_id": account_id},
+        {"start": start, "end": end, "tz": _tz(db, tz), "account_id": account_id},
     ).mappings()
     return [schemas.TimeseriesPoint(**r) for r in rows]
